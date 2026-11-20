@@ -1,0 +1,124 @@
+/* DesignGym tokens. Light "proofing desk": warm paper chrome, a neutral
+   inspection mat for specimens, one red-pen accent for marks. */
+:root {
+  /* color */
+  --paper: oklch(0.975 0.005 85);
+  --panel: oklch(0.99 0.003 85);
+  --mat: oklch(0.935 0.006 85);
+  --ink: oklch(0.24 0.012 70);
+  --ink-2: oklch(0.43 0.012 70);
+  --ink-3: oklch(0.5 0.01 70);
+  --line: oklch(0.87 0.008 80);
+  --line-strong: oklch(0.64 0.01 80);
+  --mark: oklch(0.55 0.19 32);
+  --mark-wash: oklch(0.55 0.19 32 / 0.08);
+  --ok: oklch(0.48 0.11 152);
+  --ok-wash: oklch(0.48 0.11 152 / 0.1);
+  --partial: oklch(0.5 0.1 70);
+  --on-ink: oklch(0.98 0.004 85);
+
+  /* type: one scale (≈1.2), fixed rem */
+  /* system-ui first: Chrome ignores ui-sans-serif and -apple-system, so named sans faces
+     back it up before the generic, whatever a browser maps that generic to */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --text-xs: 0.75rem;   /* 12 */
+  --text-sm: 0.875rem;  /* 14 */
+  --text-md: 1rem;      /* 16 */
+  --text-lg: 1.25rem;   /* 20 */
+  --text-xl: 1.5rem;    /* 24 */
+  --text-2xl: 2rem;     /* 32: landing section display */
+  --text-3xl: 2.5rem;   /* 40: landing section display */
+  --text-4xl: 3.5rem;   /* 56: landing hero, narrow desktop */
+  --text-5xl: 4rem;     /* 64: landing hero */
+
+  /* space: 8pt scale, 4 as the half step */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-2h: 12px; /* half step: control insets, button gaps */
+  --s-3: 16px;
+  --s-4: 24px;
+  --s-5: 32px;
+  --s-6: 48px;
+  --s-7: 64px;
+  --s-8: 96px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  color-scheme: light;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: calc(1024px - (100vw - 100%)); /* 1024 viewport, minus a vertical scrollbar if present */
+  background: var(--paper);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: oklch(0.55 0.19 32 / 0.2);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

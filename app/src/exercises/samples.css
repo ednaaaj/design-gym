@@ -1,0 +1,165 @@
+/* Specimen styles. Deliberately a different "product" from the app chrome:
+   cool neutrals, its own button. All geometry in px so flaw numbers are literal. */
+
+.sp-pane {
+  --sp-ink: oklch(0.24 0.02 260);
+  --sp-ink-2: oklch(0.47 0.02 260);
+  --sp-line: oklch(0.86 0.01 260);
+  --sp-surface: oklch(1 0 0);
+  position: relative;
+  font-family: var(--font-sans);
+  color: var(--sp-ink);
+  font-size: 14px;
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sp-card {
+  position: absolute;
+  background: var(--sp-surface);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 2px oklch(0.3 0.02 260 / 0.08),
+    0 8px 24px oklch(0.3 0.02 260 / 0.08);
+}
+
+.sp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.sp-btn-solid { background: var(--sp-ink); color: oklch(0.98 0 0); }
+.sp-btn-outline { box-shadow: inset 0 0 0 1px var(--sp-line); color: var(--sp-ink); }
+.sp-btn-block { display: flex; width: 100%; }
+
+/* ProfileCard: card at (80, 64), 360 wide; vertical padding fixed at 24 */
+.sp-profile { left: 80px; top: 64px; width: 360px; padding-top: 24px; padding-bottom: 24px; box-sizing: border-box; }
+.sp-profile-head { display: flex; align-items: center; }
+.sp-avatar {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: oklch(0.9 0.04 200);
+  color: oklch(0.36 0.06 200);
+  font-weight: 600;
+  font-size: 16px;
+}
+.sp-profile-name { font-size: 18px; line-height: 24px; font-weight: 600; }
+.sp-profile-role { margin-top: 4px; color: var(--sp-ink-2); }
+.sp-profile-bio { margin: 16px 0 0; height: 66px; line-height: 22px; color: var(--sp-ink-2); } /* fixed 3 lines: geometry must not depend on font wrapping */
+.sp-profile-actions { display: flex; margin-top: 24px; }
+.sp-profile-actions .sp-btn { flex: 1 1 0; }
+
+/* PricingCard: card at (30, 32), 280 wide */
+.sp-pricing { left: 30px; top: 32px; width: 280px; padding: 24px; box-sizing: border-box; }
+.sp-pricing-plan { font-weight: 600; }
+.sp-pricing-desc { margin-top: 4px; color: var(--sp-ink-2); min-height: 2lh; }
+.sp-pricing-price { display: flex; align-items: baseline; gap: 4px; margin-top: 16px; }
+.sp-pricing-per { color: var(--sp-ink-2); }
+.sp-pricing-list { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 8px; }
+.sp-pricing-list li { display: flex; align-items: center; gap: 8px; }
+.sp-pricing-list svg { width: 16px; height: 16px; fill: none; stroke: oklch(0.5 0.1 160); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.sp-pricing .sp-btn-block { margin-top: 24px; }
+
+/* LoginForm: form at (30, 40), 280 wide */
+.sp-login { position: absolute; left: 30px; top: 40px; width: 280px; }
+.sp-login-title { font-size: 24px; line-height: 32px; font-weight: 600; }
+.sp-login-sub { margin-top: 4px; color: var(--sp-ink-2); }
+.sp-field { margin-top: 16px; }
+.sp-login-sub + .sp-field { margin-top: 24px; }
+.sp-label { font-weight: 500; }
+.sp-input {
+  margin-top: 8px;
+  height: 40px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  background: var(--sp-surface);
+  box-shadow: inset 0 0 0 1px var(--sp-line);
+}
+.sp-input-secret { letter-spacing: 0.1em; }
+.sp-check { display: flex; align-items: center; gap: 8px; margin-top: 16px; }
+.sp-checkbox { width: 16px; height: 16px; border-radius: 4px; box-shadow: inset 0 0 0 1px oklch(0.7 0.01 260); background: var(--sp-surface); }
+.sp-login-btn { display: flex; margin-top: 24px; }
+.sp-login-link { margin-top: 16px; color: oklch(0.45 0.12 255); font-weight: 500; }
+
+/* Multi-line copy is split into explicit nowrap lines so geometry never depends on font wrapping. */
+.sp-toast-text > span, .sp-article-title > span, .sp-article-excerpt > span { display: block; white-space: nowrap; }
+
+/* Toast: card at (30, 40), 360 wide; body box fixed at 40px so line-height never moves the actions */
+.sp-toast { left: 30px; top: 40px; width: 360px; padding: 16px; box-sizing: border-box; display: flex; gap: 12px; }
+.sp-toast-icon { flex: none; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; }
+.sp-toast-icon svg { width: 16px; height: 16px; fill: none; stroke: oklch(1 0 0); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sp-toast-main { flex: 1; min-width: 0; padding-right: 28px; }
+.sp-toast-title { white-space: nowrap; }
+.sp-toast-text { margin-top: 4px; height: 40px; }
+.sp-toast-actions { display: flex; align-items: center; gap: 16px; height: 20px; margin-top: 12px; font-weight: 600; white-space: nowrap; }
+.sp-toast-actions.is-caps { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+.sp-toast-close { position: absolute; top: 16px; right: 16px; width: 20px; height: 20px; fill: none; stroke: var(--sp-ink-2); stroke-width: 1.5; stroke-linecap: round; }
+
+/* ArticleCard: card at (30, 30), 340 wide */
+.sp-article { left: 30px; top: 30px; width: 340px; padding: 24px; box-sizing: border-box; }
+.sp-article-cover { height: 120px; border-radius: 8px; background: linear-gradient(135deg, oklch(0.9 0.04 200), oklch(0.85 0.05 250)); }
+.sp-article-meta { margin-top: 16px; line-height: 16px; color: var(--sp-ink-2); white-space: nowrap; }
+.sp-article-title { margin-top: 8px; font-weight: 600; }
+.sp-article-excerpt { margin-top: 8px; }
+.sp-article-foot { display: flex; align-items: center; justify-content: space-between; height: 32px; margin-top: 16px; }
+.sp-article-author { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; white-space: nowrap; }
+.sp-article-avatar { width: 24px; height: 24px; border-radius: 50%; background: oklch(0.9 0.04 200); }
+.sp-article-read { color: oklch(0.45 0.12 255); font-weight: 600; white-space: nowrap; }
+.sp-article-btn { height: 32px; padding: 0 12px; white-space: nowrap; }
+
+/* StatTiles: three 156px tiles from (30, 36), 12px apart */
+.sp-stats { position: absolute; left: 30px; top: 36px; display: grid; grid-template-columns: repeat(3, 156px); gap: 12px; }
+.sp-stat { position: relative; height: 120px; padding: 16px; box-sizing: border-box; white-space: nowrap; }
+.sp-stat-label { font-size: 13px; line-height: 18px; color: var(--sp-ink-2); }
+.sp-stat-label.is-caps { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; }
+.sp-stat-value { margin-top: 8px; font-size: 28px; line-height: 36px; font-variant-numeric: tabular-nums; }
+.sp-stat-delta { display: flex; align-items: baseline; gap: 6px; margin-top: 8px; font-size: 13px; line-height: 18px; font-weight: 500; }
+.sp-stat-vs { font-size: 12px; font-weight: 400; color: var(--sp-ink-2); }
+
+/* SettingsList: card at (30, 30), 380 wide; rows 60px; dividers start at the 64px text edge */
+.sp-settings { left: 30px; top: 30px; width: 380px; padding: 8px 0; box-sizing: border-box; }
+.sp-settings-title { padding: 12px 20px 8px; font-size: 16px; line-height: 24px; font-weight: 600; }
+.sp-row { position: relative; display: flex; align-items: center; gap: 12px; height: 60px; padding: 0 20px; white-space: nowrap; }
+.sp-row-icon { flex: none; width: 32px; height: 32px; border-radius: 8px; background: oklch(0.95 0.02 260); box-shadow: inset 0 0 0 8px oklch(0.95 0.02 260), inset 0 0 0 16px oklch(0.84 0.04 260); }
+.sp-row-text { flex: 1; min-width: 0; }
+.sp-row-label { font-weight: 500; }
+.sp-row-sub { font-size: 12px; line-height: 16px; color: var(--sp-ink-2); }
+.sp-toggle { flex: none; position: relative; width: 36px; height: 20px; border-radius: 10px; background: var(--sp-line); }
+.sp-toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: oklch(1 0 0); box-shadow: 0 1px 2px oklch(0.3 0.02 260 / 0.2); }
+.sp-toggle.is-on { background: var(--sp-ink); }
+.sp-toggle.is-on::after { left: 18px; }
+.sp-row-divider { position: absolute; right: 0; bottom: 0; height: 1px; background: var(--sp-line); }
+
+/* NavBar: bar at (20, 40), 560 x 56 */
+.sp-nav { left: 20px; top: 40px; width: 560px; height: 56px; padding: 0 20px; box-sizing: border-box; display: flex; align-items: center; white-space: nowrap; }
+.sp-nav-logo { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; }
+.sp-nav-mark { width: 20px; height: 20px; border-radius: 6px; background: var(--sp-ink); }
+.sp-nav-links { display: flex; color: var(--sp-ink-2); font-weight: 500; }
+.sp-nav-actions { display: flex; align-items: center; margin-left: auto; font-weight: 500; }
+.sp-nav-btn { height: 32px; padding: 0 14px; font-size: 13px; }
+
+/* HotelCard: card at (30, 30), 300 wide */
+.sp-hotel { left: 30px; top: 30px; width: 300px; overflow: hidden; }
+.sp-hotel-cover { height: 140px; background: linear-gradient(160deg, oklch(0.86 0.05 70), oklch(0.8 0.06 30)); }
+.sp-hotel-body { padding: 20px; white-space: nowrap; }
+.sp-hotel-badge { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.sp-hotel-name { margin-top: 12px; font-size: 18px; line-height: 24px; font-weight: 600; }
+.sp-hotel-loc { margin-top: 4px; font-size: 13px; color: var(--sp-ink-2); }
+.sp-hotel-rating { margin-top: 8px; font-size: 13px; color: var(--sp-ink-2); }
+.sp-hotel-rating b { color: var(--sp-ink); font-weight: 600; }
+.sp-hotel-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
+.sp-hotel-price { font-size: 20px; line-height: 28px; font-weight: 700; }
+.sp-hotel-night { font-size: 13px; color: var(--sp-ink-2); }
+.sp-hotel-cta { color: oklch(1 0 0); }

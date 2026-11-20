@@ -1,0 +1,2713 @@
+/* ---------- palette ----------
+   Landing: warm light. A cream sheet with warm ink, one tomato accent for actions, marks,
+   the route and the margin line, and each section on its own light tint (paper, sage,
+   butter, blush, sand). The closing band is the one deep-ink sheet, the page's anchor.
+   Every landing color is a token in this block, so a theme swap is one edit here.
+   Scoped with :has(.lp) and .lp, so the arena keeps its light desk the moment the landing
+   unmounts; specimen frames get their desk values back further down.
+
+   Every sheet defines the same names. surface-0 sheet, -1 raised panel, -2 card on a panel,
+   -3 recessed well; ink, ink-muted, ink-subtle for text; line, line-strong for rules;
+   bp-line and bp-text for the blueprint drawing on that sheet. Every text pair is AA. */
+
+/* Cream sheet: the page, header, hero and roadmap, reset again inside each tile. */
+:root:has(.lp),
+.lp [data-ground],
+.lp-mo-panel {
+  --surface-0: oklch(0.96 0.015 85);
+  --surface-1: oklch(0.985 0.008 85);
+  --surface-2: oklch(0.925 0.022 80);
+  --surface-3: oklch(0.94 0.018 82);
+  --ink: oklch(0.25 0.03 60); /* 14:1 on cream */
+  --ink-muted: oklch(0.4 0.03 60);
+  --ink-subtle: oklch(0.47 0.028 60); /* 5.4:1 on the darkest tint */
+  --ink-hover: oklch(0.36 0.03 60);
+  --line: oklch(0.87 0.02 80);
+  --line-strong: oklch(0.58 0.03 60); /* 3.8:1, for rules that carry meaning */
+  --mark: oklch(0.53 0.19 33); /* tomato as text: 4.7:1+ on every tint */
+  --mark-wash: oklch(0.62 0.19 35 / 0.12);
+  --ok: oklch(0.47 0.12 152);
+  --partial: oklch(0.5 0.1 70);
+  --on-ink: oklch(0.97 0.012 85);
+  --bp-line: oklch(0.55 0.04 55); /* pencil: 3.6:1 on cream */
+  --bp-text: oklch(0.42 0.04 55);
+  color-scheme: light;
+}
+/* The accent and its button. 0.62 for marks and lines (3.5:1 on cream); the button fill
+   runs a step deeper so cream label text clears 4.5:1. */
+.lp {
+  --accent: oklch(0.62 0.19 35);
+  --accent-fill: oklch(0.55 0.19 34);
+  --accent-hover: oklch(0.5 0.18 33);
+  --on-accent: oklch(0.98 0.01 85);
+}
+/* Section stock: the same cream set, each on its own light tint. */
+.lp-section {
+  --surface-0: oklch(0.985 0.008 85); /* paper */
+  --surface-1: oklch(0.995 0.004 85);
+  --line: oklch(0.88 0.016 80);
+}
+#how {
+  --surface-0: oklch(0.945 0.022 135); /* sage */
+  --surface-1: oklch(0.98 0.01 135);
+  --line: oklch(0.85 0.025 135);
+}
+#exams {
+  --surface-0: oklch(0.96 0.032 92); /* butter */
+  --surface-1: oklch(0.985 0.014 92);
+  --surface-2: oklch(0.925 0.035 90);
+  --line: oklch(0.87 0.035 90);
+}
+#roadmap {
+  --surface-0: oklch(0.945 0.022 45); /* blush */
+  --surface-1: oklch(0.98 0.009 45);
+  --line: oklch(0.86 0.026 45);
+}
+#improve {
+  --surface-0: oklch(0.935 0.028 80); /* sand */
+  --surface-1: oklch(0.97 0.013 82);
+  --line: oklch(0.84 0.028 80);
+}
+/* Raised panels on a tint get a hairline edge in the sheet's own line color. */
+.lp-section :is(.lp-panel, .lp-score, .lp-finish) {
+  --surface-edge: inset 0 0 0 1px var(--line);
+}
+/* Deep-ink sheet: the closing band and footer, the one dark block on the page. */
+.lp-end,
+.lp-footer {
+  --surface-0: oklch(0.27 0.03 55);
+  --surface-1: oklch(0.32 0.03 55);
+  --ink: oklch(0.96 0.015 85); /* 13:1 */
+  --ink-muted: oklch(0.86 0.02 80);
+  --ink-subtle: oklch(0.8 0.02 80); /* 8:1 */
+  --line: oklch(0.38 0.03 55);
+  --line-strong: oklch(0.62 0.03 60);
+  --mark: oklch(0.72 0.15 38);
+  --on-ink: oklch(0.27 0.03 55);
+  --bp-line: oklch(0.7 0.04 60);
+  --bp-text: oklch(0.86 0.03 70);
+  color-scheme: dark;
+  background: var(--surface-0);
+  color: var(--ink);
+}
+/* Tile stock: four light sheets from one warm family, blush, butter, sage and sand. Each
+   tile's drawing color is its own darker hue, tuned to stay readable on that stock. */
+.lp-tile:nth-child(1) .lp-tile-preview {
+  --surface: oklch(0.935 0.03 45);
+  --surface-2: oklch(0.965 0.016 50); /* raised cards read lighter on light stock */
+  --bp-line: oklch(0.56 0.1 40);
+  --bp-text: oklch(0.42 0.09 40); /* 5.6:1 at the 0.85 hover opacity */
+}
+.lp-tile:nth-child(2) .lp-tile-preview {
+  --surface: oklch(0.95 0.05 95);
+  --bp-line: oklch(0.55 0.08 75);
+  --bp-text: oklch(0.42 0.07 70);
+}
+.lp-tile:nth-child(3) .lp-tile-preview {
+  --surface: oklch(0.93 0.03 140);
+  --bp-line: oklch(0.52 0.06 145);
+  --bp-text: oklch(0.4 0.055 145);
+}
+.lp-tile:nth-child(4) .lp-tile-preview {
+  --surface: oklch(0.915 0.03 70);
+  --surface-2: oklch(0.96 0.014 75);
+  --bp-line: oklch(0.54 0.07 55);
+  --bp-text: oklch(0.41 0.06 55);
+}
+/* Names the shared arena vocabulary (.btn, .frame, .mark) reads, resolved per sheet. */
+:root:has(.lp),
+.lp-section,
+.lp-end,
+.lp-footer,
+.lp [data-ground],
+.lp-mo-panel {
+  --ink-2: var(--ink-muted);
+  --ink-3: var(--ink-subtle);
+  --panel: var(--surface-1);
+  color: var(--ink);
+}
+/* Read off the sheet, not the tile: the drawing while it builds over the bare sheet, and the
+   tile focus ring, which sits outside the tile on the sheet. */
+:root:has(.lp),
+.lp-section,
+.lp-end {
+  --bp-sheet-line: var(--bp-line);
+  --bp-sheet-text: var(--bp-text);
+  --sheet-ink: var(--ink);
+}
+/* Inside a specimen frame we are back on the light desk, whatever sheet it sits on. */
+.lp .frame {
+  --mark: oklch(0.55 0.19 32);
+  --mark-wash: oklch(0.55 0.19 32 / 0.08);
+  --ok: oklch(0.48 0.11 152);
+  --ok-wash: oklch(0.48 0.11 152 / 0.1);
+  --on-ink: oklch(0.98 0.004 85);
+  --line-strong: oklch(0.56 0.01 80);
+}
+/* Specimen colors: the sample product the previews and diagrams show (cool ink, a blue link),
+   kept apart from the landing's own palette on purpose. */
+.lp {
+  --spec-ink: oklch(0.24 0.02 260);
+  --spec-ink-2: oklch(0.47 0.02 260);
+  --spec-faint: oklch(0.78 0.01 260);
+  --spec-line: oklch(0.86 0.01 260);
+  --spec-link: oklch(0.45 0.12 255);
+  --spec-ok: oklch(0.45 0.12 150);
+  --spec-ok-swatch: oklch(0.5 0.12 150);
+  --spec-error: oklch(0.52 0.17 25);
+  --spec-error-text: oklch(0.5 0.17 25);
+  --spec-disabled: oklch(0.92 0.006 260);
+  --spec-stage: oklch(0.97 0.004 260);
+  --spec-white: oklch(0.995 0.002 85);
+  --spec-hairline: oklch(0.24 0.02 260 / 0.1);
+}
+/* The construction line in the margin crosses every sheet in one warm pencil tone, 3:1+ on
+   all of them, the deep band included. Shadows are warm ink, never black. */
+.lp {
+  --sheet-line: oklch(0.62 0.05 50);
+  --shadow-ink: oklch(0.3 0.04 55);
+}
+
+.lp {
+  --lp-max: 1200px;
+  --lp-pad: max(var(--s-5), calc((100% - var(--lp-max)) / 2));
+  --zoom: 1; /* fixed-size previews scale with the viewport, see bottom */
+
+  min-height: 100dvh;
+  background: var(--surface-0);
+}
+.lp-section {
+  background: var(--surface-0);
+}
+/* The canvas behind the page and overscroll match while the landing is mounted. */
+:root:has(.lp),
+body:has(.lp) {
+  background: var(--surface-0);
+  scrollbar-color: var(--line-strong) transparent;
+}
+/* Anything scrolled into view (focus, anchors) clears the 64px sticky header. */
+:root:has(.lp) {
+  scroll-padding-top: 64px;
+}
+
+/* The page's two real calls to action carry the accent; buttons inside previews stay ink. */
+.lp-cta .btn-primary {
+  background: var(--accent-fill);
+  color: var(--on-accent);
+}
+
+.btn-lg {
+  height: 48px;
+  padding: 0 var(--s-4);
+  font-size: var(--text-md);
+}
+
+.lp-skip {
+  position: absolute;
+  top: var(--s-2);
+  left: var(--s-2);
+  z-index: 11;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: var(--on-ink);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  translate: 0 -200%;
+}
+.lp-skip:focus-visible {
+  translate: 0 0;
+}
+
+/* ---------- header ---------- */
+/* Sticky, so the section index stays in reach on a long page. Its hairline only appears
+   once the page has scrolled under it (natively scroll-driven; always on otherwise). */
+.lp-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding-inline: var(--lp-pad);
+  background: var(--surface-0);
+}
+.lp-header::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: var(--line);
+}
+@supports (animation-timeline: scroll()) {
+  .lp-header::after {
+    animation: lp-header-line linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 64px;
+  }
+}
+@keyframes lp-header-line {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-header::after {
+    animation: none;
+  }
+}
+.lp-nav {
+  display: flex;
+  gap: var(--s-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-nav a {
+  position: relative;
+  display: block;
+  padding: var(--s-2) var(--s-2h);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  line-height: 24px;
+  color: var(--ink-muted);
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+/* A 1px rule that draws in from the left under the hovered or focused link. */
+.lp-nav a::after {
+  content: '';
+  position: absolute;
+  left: var(--s-2h);
+  right: var(--s-2h);
+  bottom: 6px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 220ms var(--ease-out);
+}
+.lp-nav a:focus-visible,
+.lp-nav a[aria-current] {
+  color: var(--ink);
+}
+.lp-nav a:focus-visible::after,
+.lp-nav a[aria-current]::after {
+  transform: scaleX(1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .lp-nav a:hover {
+    color: var(--ink);
+  }
+  .lp-nav a:hover::after {
+    transform: scaleX(1);
+  }
+}
+.lp-header nav {
+  margin-left: auto;
+}
+
+/* Real actions carry an arrow; it nudges forward on hover and focus. */
+.lp-arrow {
+  flex: none;
+  margin-left: var(--s-2);
+  margin-right: -2px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 200ms var(--ease-out);
+}
+:is(.btn, .lp-tile-link):focus-visible .lp-arrow {
+  transform: translateX(3px);
+}
+@media (hover: hover) and (pointer: fine) {
+  .lp .btn-primary:hover {
+    background: var(--ink-hover);
+  }
+  .lp .lp-cta .btn-primary:hover {
+    background: var(--accent-hover);
+  }
+  .btn:hover .lp-arrow,
+  .lp-tile[data-interactive]:hover .lp-arrow {
+    transform: translateX(3px);
+  }
+}
+
+/* ---------- 1. hero ---------- */
+.lp-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s-6);
+  padding: var(--s-7) var(--lp-pad) var(--s-8);
+}
+.lp-hero h1 {
+  max-width: 11ch;
+  font-size: var(--text-5xl);
+  line-height: 1.04;
+  font-weight: 680;
+  letter-spacing: -0.03em;
+}
+.lp-hero h1:focus {
+  outline: none;
+}
+#lp-title {
+  scroll-margin-top: var(--s-5);
+}
+.lp-lead {
+  max-width: 44ch;
+  margin-top: var(--s-4);
+  font-size: var(--text-lg);
+  line-height: 30px;
+  color: var(--ink-muted);
+}
+.lp-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3) var(--s-4);
+  margin-top: var(--s-5);
+}
+.lp-next {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.lp-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: var(--s-4) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+  color: var(--ink-subtle);
+}
+.lp-facts li + li::before {
+  content: '·' / '';
+  margin-right: var(--s-2);
+}
+
+.lp-hero-figure {
+  position: relative;
+  margin: 12px 12px 120px 0; /* crop marks overhang 12px; the chip hangs below */
+  zoom: var(--zoom);
+}
+/* The gym, in 3D: the dumbbell floats over the frame's empty top-right mat, above the card,
+   so it never covers the specimen being demoed. Sized in the figure's own units, so it
+   zooms with it; width and height attributes reserve its box before it loads. */
+.lp-hero-bell {
+  position: absolute;
+  z-index: 1;
+  top: -54px; /* clears the 64px sticky header at every zoom, the live 3D's perspective included */
+  right: -40px;
+  width: 300px;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lp:not([data-return]) .lp-hero-bell {
+    animation: lp-settle 900ms var(--ease-out) 600ms backwards;
+  }
+}
+@keyframes lp-settle {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) rotate(-2deg);
+  }
+}
+
+/* ---------- the live dumbbell (DumbbellActor.tsx) ----------
+   One fixed, transparent canvas over the page, under the sticky header. Decorative and
+   click-through; it never sits on text because every pose is a measured empty box. Once it
+   draws, the hero image hands over with a crossfade between two renders of the same pose. */
+.lp-actor {
+  position: fixed;
+  inset: 0;
+  z-index: 4; /* over section sheets and the margin line, under the header (10) */
+  pointer-events: none;
+  user-select: none;
+}
+.lp-actor canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+}
+.lp-actor[data-live] canvas {
+  opacity: 1;
+}
+.lp-hero-bell {
+  transition: opacity 240ms var(--ease-out);
+}
+.lp[data-actor='live'] .lp-hero-bell {
+  opacity: 0;
+}
+/* First visit: the poster holds center stage, at the intro's own pose, until the 3D takes it. */
+.lp-actor-poster {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60%;
+  height: auto;
+  translate: -50% -50%;
+  transition: opacity 240ms var(--ease-out);
+}
+.lp-actor:is([data-live], [data-intro='off']) .lp-actor-poster {
+  opacity: 0;
+}
+
+/* The intro stage: the page stays in the DOM but out of sight while the dumbbell holds and
+   turns; it fades in as the dumbbell flies to the hero, with the hero's own entrance starting
+   at that moment. A skip removes the stage at once and lands on the finished page. */
+.lp[data-intro='stage'] > :is(.lp-header, main, .lp-footer, .lp-sheet) {
+  opacity: 0;
+}
+.lp[data-intro='travel'] > :is(.lp-header, main, .lp-footer, .lp-sheet) {
+  transition: opacity 600ms var(--ease-out);
+}
+/* :not([data-return]) matches the entrance rules' weight, so these win over their shorthand. */
+.lp[data-intro='stage']:not([data-return]) .lp-hero-text h1 .rt-word,
+.lp[data-intro='stage']:not([data-return]) .lp-hero-text > :not(h1) {
+  animation-play-state: paused;
+}
+.lp[data-skipped]:not([data-return]) .lp-hero-text h1 .rt-word,
+.lp[data-skipped]:not([data-return]) .lp-hero-text > :not(h1) {
+  animation: none;
+}
+/* The verdict is pinned under the card: same left edge, same width (card is at x 80, 360 wide). */
+.lp-chip {
+  position: absolute;
+  left: 80px;
+  top: 330px;
+  display: grid;
+  gap: var(--s-1);
+  width: 360px;
+  padding: var(--s-3);
+  border-radius: 14px;
+  background: var(--surface-1);
+  box-shadow:
+    0 1px 2px color-mix(in oklch, var(--shadow-ink) 30%, transparent),
+    0 12px 32px color-mix(in oklch, var(--shadow-ink) 35%, transparent);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+/* The chip's three captions share one cell, so swapping them never changes its size. */
+.lp-chip-pane {
+  grid-area: 1 / 1;
+  display: grid;
+  align-content: start;
+  gap: var(--s-1);
+  transition: opacity 200ms var(--ease-out);
+}
+.lp-hero-figure:not([data-phase='feedback']) [data-pane='feedback'],
+.lp-hero-figure:not([data-phase='corrected']) [data-pane='corrected'],
+.lp-hero-figure:not([data-phase='inspect']) [data-pane='inspect'] {
+  opacity: 0;
+}
+.lp-chip-verdict {
+  font-size: var(--text-md);
+  font-weight: 650;
+  color: var(--partial);
+}
+.lp-chip-verdict.lp-chip-ok {
+  color: var(--ok);
+}
+.lp-chip-verdict.lp-chip-plain {
+  color: var(--ink);
+}
+.lp-chip-line {
+  color: var(--ink);
+}
+.lp-chip-why {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hero demo. Outlines appear one by one (the arena's own 200ms region transition), then
+   the corrected card crossfades over the flawed one. Opacity only: no geometry moves. */
+.lp-hero-fixed {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.lp-hero-figure .frame > .specimen,
+.lp-hero-fixed {
+  transition: opacity 320ms var(--ease-out);
+}
+.lp-hero-figure[data-phase='corrected'] .lp-hero-fixed {
+  opacity: 1;
+}
+.lp-hero-figure[data-phase='corrected'] .frame > .specimen {
+  opacity: 0;
+}
+.lp-hero-figure .region:not([data-on]) {
+  opacity: 0;
+  scale: 0.96;
+}
+
+/* ---------- returning user: progress strip ----------
+   A quiet row of five meters: name and percent, nothing to read. A skill without enough
+   attempts gets a dashed ring and a dot per attempt instead of a sentence. */
+.lp-strip {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--s-6);
+  margin: 0 var(--lp-pad) var(--s-7);
+  padding: var(--s-4) var(--s-5);
+  border-radius: 20px;
+  background: var(--surface-1);
+}
+.lp-strip-head h2 {
+  font-size: var(--text-md);
+  line-height: 24px;
+  font-weight: 650;
+}
+.lp-strip-head p {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.lp-strip-weak {
+  color: var(--mark);
+  font-weight: 600;
+}
+.lp-strip-skills {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-variant-numeric: tabular-nums;
+}
+.lp-strip-skills li {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: var(--s-2h);
+  align-items: center;
+  min-width: 0;
+}
+.lp-ring {
+  grid-row: 1 / 3;
+  transform: rotate(-90deg); /* fill starts at 12 o'clock */
+}
+.lp-ring circle {
+  fill: none;
+  stroke-width: 4;
+}
+.lp-ring-track {
+  stroke: var(--line);
+}
+[data-empty] .lp-ring-track {
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 4;
+}
+.lp-ring-fill {
+  stroke: var(--ink);
+  stroke-linecap: round;
+}
+[data-weakest] .lp-ring-fill {
+  stroke: var(--mark);
+}
+.lp-strip-name {
+  align-self: end;
+  font-size: var(--text-sm);
+  line-height: 20px;
+  color: var(--ink-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lp-strip-val {
+  align-self: start;
+  font-size: var(--text-lg);
+  line-height: 24px;
+  font-weight: 650;
+}
+[data-weakest] .lp-strip-val {
+  color: var(--mark);
+}
+.lp-strip-dots {
+  align-self: start;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--text-xs);
+  line-height: 24px;
+  color: var(--ink-subtle);
+}
+.lp-strip-dots > span {
+  display: flex;
+  gap: 3px;
+}
+.lp-strip-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.lp-strip-dots i[data-on] {
+  background: var(--ink-muted);
+  box-shadow: none;
+}
+
+/* ---------- sections ---------- */
+.lp-section {
+  padding: var(--s-8) var(--lp-pad);
+  scroll-margin-top: calc(var(--s-6) - var(--s-8)); /* heading lands 48px under the header */
+}
+.lp-head {
+  max-width: 640px;
+  margin-bottom: var(--s-6);
+}
+.lp-head h2 {
+  font-size: var(--text-3xl);
+  line-height: 1.1;
+  font-weight: 680;
+  letter-spacing: -0.025em;
+}
+.lp-head p {
+  margin-top: var(--s-3);
+  font-size: var(--text-lg);
+  line-height: 30px;
+  color: var(--ink-muted);
+}
+.lp-subhead {
+  margin: var(--s-7) 0 var(--s-4);
+  font-size: var(--text-xl);
+  line-height: 32px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+/* ---------- status labels: text carries the meaning, the dot only echoes it ---------- */
+.lp-status {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+.lp-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+.lp-status[data-status='ready'] {
+  color: var(--ok);
+}
+.lp-status[data-status='ready']::before {
+  background: currentColor;
+}
+.lp-status[data-status='planned']::before {
+  box-shadow: inset 0 0 0 1.5px var(--line-strong);
+}
+.lp-status-pre {
+  order: -1;
+  font-weight: 500;
+  color: var(--ink-subtle);
+}
+/* A label, not a control: plain text, no fill, no outline, nothing that reads as pressable. */
+.lp-tag {
+  font-size: var(--text-xs);
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--ink-subtle);
+}
+
+/* ---------- 2. preview tiles ---------- */
+.lp-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-6) var(--s-4);
+}
+.lp-tile {
+  position: relative;
+  min-width: 0;
+}
+.lp-tile-preview {
+  --surface: var(--surface-1);
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: calc(440px * var(--zoom));
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: default;
+  user-select: none;
+  transition: transform 220ms var(--ease-out);
+}
+/* The one clickable tile gets a brighter edge on hover and focus, faded in as a layer. */
+.lp-tile[data-interactive] .lp-tile-preview::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms var(--ease-out);
+}
+/* Centered in the preview's top margin, clear of the picture at every zoom. */
+.lp-tile-tag {
+  position: absolute;
+  top: calc(10px * var(--zoom));
+  right: var(--s-4);
+  font-size: 11px;
+  line-height: 12px;
+  translate: 0 -50%;
+  color: var(--ink-subtle);
+}
+.lp-canvas {
+  position: relative;
+  flex: none;
+  width: 540px;
+  height: 400px;
+  zoom: var(--zoom);
+}
+.lp-tile-title {
+  margin-top: var(--s-4);
+  font-size: var(--text-xl);
+  line-height: 32px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+.lp-tile-desc {
+  max-width: 48ch;
+  margin-top: var(--s-1);
+  color: var(--ink-muted);
+}
+.lp-tile-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-1) var(--s-3);
+  margin-top: var(--s-2);
+  font-size: var(--text-xs);
+  line-height: 20px;
+  color: var(--ink-subtle);
+}
+/* The trainer tile is one big link into the arena. */
+.lp-tile-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 6px;
+  cursor: pointer;
+  transition: text-decoration-color 160ms ease;
+}
+.lp-tile-link .lp-arrow {
+  width: 20px;
+  height: 20px;
+  margin-right: 0;
+}
+.lp-tile-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+}
+.lp-tile-link:focus-visible {
+  outline: none;
+}
+.lp-tile:has(.lp-tile-link:focus-visible) .lp-tile-preview {
+  outline: 2px solid var(--sheet-ink);
+  outline-offset: 4px;
+}
+/* Hover and keyboard focus look the same: lift, brighter edge, underline, and the
+   blueprint comes back over the picture. Tiles that are only pictures get the blueprint
+   alone, with a default cursor and no lift, so they never read as clickable. */
+.lp-tile:has(.lp-tile-link:focus-visible) .lp-tile-preview {
+  transform: translateY(-4px);
+}
+.lp-tile:has(.lp-tile-link:focus-visible) .lp-tile-preview::after {
+  opacity: 1;
+}
+.lp-tile:has(.lp-tile-link:focus-visible) .lp-tile-preview > .bp {
+  opacity: 0.85;
+}
+.lp-tile:has(.lp-tile-link:focus-visible) .lp-tile-preview > .bp :is(.bp-label, .bp-dim, .bp-tick) {
+  opacity: 1;
+}
+.lp-tile-link:focus-visible {
+  text-decoration-color: currentColor;
+}
+@media (hover: hover) and (pointer: fine) {
+  .lp-tile[data-interactive]:hover .lp-tile-preview {
+    transform: translateY(-4px);
+  }
+  .lp-tile[data-interactive]:hover .lp-tile-preview::after {
+    opacity: 1;
+  }
+  .lp-tile:hover .lp-tile-preview > .bp {
+    opacity: 0.85;
+  }
+  .lp-tile:hover .lp-tile-preview > .bp :is(.bp-label, .bp-dim, .bp-tick) {
+    opacity: 1;
+  }
+  .lp-tile[data-interactive]:hover .lp-tile-link {
+    text-decoration-color: currentColor;
+  }
+}
+.lp-tile[data-interactive]:active .lp-tile-preview {
+  transform: translateY(-2px) scale(0.99);
+  transition-duration: 120ms;
+}
+
+/* Eye trainer: the arena mid-exercise */
+.lp-eye {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+}
+.lp-eye-meta {
+  display: flex;
+  justify-content: space-between;
+  width: 420px;
+  font-size: var(--text-xs);
+  color: var(--ink-subtle);
+  font-variant-numeric: tabular-nums;
+}
+.lp-eye .frame {
+  margin-block: var(--s-1);
+}
+.lp-eye .mark {
+  pointer-events: none;
+  transition:
+    opacity 160ms var(--ease-out),
+    scale 160ms var(--ease-out);
+}
+/* A mark lands like a click: from 0.9 and transparent, never from nothing. */
+.lp-eye .mark:not([data-on]) {
+  opacity: 0;
+  scale: 0.9;
+}
+/* The aim layer is the overlay's size, so translate(x%, y%) puts the cursor on the flaw. */
+.lp-eye-aim {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition:
+    transform 560ms cubic-bezier(0.77, 0, 0.175, 1),
+    opacity 200ms var(--ease-out);
+}
+.lp-eye[data-aiming] .lp-eye-aim {
+  opacity: 1;
+}
+.lp-eye-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  translate: -50% -50%;
+  background:
+    linear-gradient(var(--mark), var(--mark)) center / 1.5px 100% no-repeat,
+    linear-gradient(var(--mark), var(--mark)) center / 100% 1.5px no-repeat;
+}
+.lp-eye-prompt {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2h);
+  width: 444px;
+  padding: var(--s-2h) var(--s-2h) var(--s-2h) var(--s-3);
+  border-radius: 14px;
+  background: var(--surface-2);
+  font-size: var(--text-sm);
+  line-height: 20px;
+  color: var(--ink-muted);
+}
+.lp-eye-prompt p {
+  flex: 1;
+}
+.lp-eye-prompt b {
+  font-weight: 600;
+  color: var(--ink);
+}
+.lp-eye-count {
+  flex: none;
+  font-size: var(--text-xs);
+  color: var(--ink-subtle);
+}
+.lp-eye-submit {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 var(--s-2h);
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--on-ink);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+/* Playground: a token board on the light desk */
+.lp-pg {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: var(--s-4);
+  align-content: center;
+  padding: 0 var(--s-2);
+  font-size: 12px;
+  line-height: 16px;
+}
+.lp-pg-tokens {
+  display: grid;
+  gap: var(--s-3);
+}
+/* Two tokens drive every component below; the demo only ever changes these. */
+.lp-pg {
+  --pg-r: 8px;
+  --pg-primary: var(--spec-ink);
+}
+.lp-pg :is(.sp-btn, .sp-input) {
+  border-radius: var(--pg-r);
+}
+.lp-pg-comp.sp-card {
+  border-radius: calc(var(--pg-r) + var(--s-2)); /* concentric with the controls inside */
+}
+.lp-pg .sp-btn-solid {
+  background: var(--pg-primary);
+}
+.lp-pg-radius .lp-pg-head b {
+  margin-left: var(--s-1);
+  font-weight: 600;
+  color: var(--sp-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.lp-pg-slider {
+  position: relative;
+  display: block;
+  height: 4px;
+  margin: 10px 8px 6px;
+  border-radius: 2px;
+  background: var(--sp-line);
+}
+.lp-pg-knob {
+  position: absolute;
+  inset: 0;
+  transition: transform 320ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+.lp-pg-knob i {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--sp-surface);
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--spec-ink) 20%, transparent),
+    0 1px 3px color-mix(in oklch, var(--spec-ink) 20%, transparent);
+}
+/* The token being edited gets the focus treatment, so you can see which value moved. */
+.lp-pg-primary i {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.lp-pg[data-edit='primary'] .lp-pg-primary i {
+  outline-color: var(--spec-link);
+}
+.lp-pg[data-edit='primary'] .lp-pg-primary,
+.lp-pg[data-edit='radius'] .lp-pg-radius .lp-pg-head b {
+  color: var(--spec-link); /* 6.6:1 on white; color only, so nothing reflows */
+}
+.lp-pg-head {
+  margin-bottom: var(--s-2);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sp-ink);
+}
+.lp-pg-swatches {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-2h) var(--s-2);
+  color: var(--sp-ink-2);
+}
+.lp-pg-swatches span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.lp-pg-swatches i {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px var(--spec-hairline);
+}
+.lp-pg-type {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  color: var(--sp-ink-2);
+}
+.lp-pg-type span {
+  display: grid;
+  justify-items: start;
+  font-variant-numeric: tabular-nums;
+}
+.lp-pg-type b {
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--sp-ink);
+}
+.lp-pg-space {
+  display: grid;
+  gap: 6px;
+  color: var(--sp-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.lp-pg-space span {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.lp-pg-space i {
+  height: 8px;
+  border-radius: 2px;
+  background: color-mix(in oklch, var(--spec-link) 55%, transparent);
+}
+.lp-pg-comp {
+  position: relative;
+  padding: var(--s-3) var(--s-4);
+}
+.lp-pg-comp .lp-pg-head:not(:first-child) {
+  margin-top: var(--s-3);
+}
+.lp-pg-buttons {
+  display: flex;
+  gap: var(--s-2);
+  color: var(--sp-ink-2);
+}
+.lp-pg-buttons > span {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+.lp-pg-buttons .sp-btn {
+  height: 32px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+.lp-pg-buttons .is-hover {
+  background: color-mix(in oklch, var(--pg-primary), var(--spec-white) 14%);
+}
+.lp-pg-buttons .is-focus {
+  box-shadow:
+    0 0 0 2px var(--sp-surface),
+    0 0 0 4px var(--spec-link);
+}
+.lp-pg-buttons .is-disabled {
+  background: var(--spec-disabled);
+  color: var(--spec-ink-2);
+}
+.lp-pg .sp-input {
+  height: 36px;
+  margin-top: var(--s-2);
+  font-size: 13px;
+}
+.lp-pg .sp-input:first-of-type {
+  margin-top: 0;
+}
+.lp-pg .sp-input.is-error {
+  box-shadow: inset 0 0 0 1.5px var(--spec-error);
+}
+.lp-pg-error {
+  margin-top: 6px;
+  color: var(--spec-error-text);
+  font-weight: 500;
+}
+.lp-pg-checks {
+  display: grid;
+  gap: var(--s-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--sp-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.lp-pg-checks li {
+  display: flex;
+  justify-content: space-between;
+}
+.lp-pg-checks b {
+  font-weight: 600;
+  color: var(--spec-ok);
+}
+
+/* Motion lab: one modal entrance played three ways, beside the curve in use */
+.lp-mo {
+  display: grid;
+  grid-template-rows: 216px 1fr;
+  gap: var(--s-3);
+  padding-block: var(--s-1);
+}
+.lp-mo-stage {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--spec-stage);
+}
+.lp-mo-app {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  zoom: 0.9;
+}
+.lp-mo-scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklch, var(--spec-ink) 32%, transparent);
+}
+.lp-mo-modal {
+  left: 50%;
+  top: 50%;
+  display: grid;
+  gap: var(--s-1);
+  width: 272px;
+  margin: -64px 0 0 -136px;
+  padding: var(--s-3);
+}
+.lp-mo-modal b {
+  font-size: 15px;
+  font-weight: 600;
+}
+.lp-mo-modal > span:not(.lp-mo-actions) {
+  font-size: 13px;
+  color: var(--sp-ink-2);
+}
+.lp-mo-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--s-2);
+  margin-top: var(--s-2h);
+}
+.lp-mo-actions .sp-btn {
+  height: 32px;
+  padding: 0 var(--s-2h);
+  font-size: 13px;
+}
+/* Replays use the selected curve on the way in. The way out is a fast 150ms fade and the
+   dot snaps back, so each replay starts clean and only the entrance is being judged. */
+.lp-mo-scrim,
+.lp-mo-modal {
+  transition:
+    opacity 150ms ease-out,
+    transform 150ms ease-out;
+}
+.lp-mo[data-shown] :is(.lp-mo-scrim, .lp-mo-modal) {
+  transition-duration: var(--mo-ms);
+  transition-timing-function: var(--mo-ease);
+}
+.lp-mo:not([data-shown]) .lp-mo-scrim {
+  opacity: 0;
+}
+.lp-mo:not([data-shown]) .lp-mo-modal {
+  opacity: 0;
+  transform: scale(0.96);
+}
+.lp-mo-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 104px;
+  gap: var(--s-4);
+  align-items: center;
+  padding: var(--s-2h) var(--s-4) var(--s-2h) var(--s-2h);
+  border-radius: 14px;
+  background: var(--surface-3);
+  color: var(--ink-muted);
+  font-size: 12px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.lp-mo-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-mo-list li {
+  display: grid;
+  grid-template-columns: 64px 104px minmax(0, 1fr);
+  gap: var(--s-2);
+  align-items: baseline;
+  padding: var(--s-2) var(--s-2h);
+  border-radius: 8px;
+}
+.lp-mo-list li[data-on] {
+  background: var(--surface-1);
+}
+.lp-mo-list b {
+  font-weight: 600;
+  color: var(--ink);
+}
+.lp-mo-list [data-on] .lp-mo-why {
+  color: var(--mark);
+}
+.lp-mo-list [data-on][data-verdict='ok'] .lp-mo-why {
+  color: var(--ok);
+}
+.lp-mo-curve {
+  position: relative;
+  width: 104px;
+  height: 72px;
+}
+.lp-mo-curve svg {
+  display: block;
+  overflow: visible;
+  fill: none;
+}
+.lp-mo-axis {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+.lp-mo-ease {
+  stroke: var(--mark);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.lp-mo-axis-label {
+  position: absolute;
+  font-size: 11px;
+  line-height: 12px;
+  color: var(--ink-subtle);
+}
+.lp-mo-t {
+  right: 0;
+  bottom: -18px;
+}
+.lp-mo-v {
+  left: 0;
+  top: -18px;
+}
+/* The dot rides the curve exactly: x moves linearly with time, y takes the easing. */
+.lp-mo-dot-x {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+.lp-mo-dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: 0 0 -5px -5px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+.lp-mo[data-shown] .lp-mo-dot-x {
+  transform: translateX(104px);
+  transition: transform var(--mo-ms) linear;
+}
+.lp-mo[data-shown] .lp-mo-dot {
+  transform: translateY(-72px);
+  transition: transform var(--mo-ms) var(--mo-ease);
+}
+
+/* Progress: the dashboard */
+.lp-pr {
+  display: grid;
+  align-content: center;
+  gap: var(--s-2h);
+}
+.lp-pr-card {
+  padding: var(--s-3) var(--s-4);
+  border-radius: 14px;
+  background: var(--surface-2);
+}
+.lp-pr-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--s-3);
+  font-size: var(--text-xs);
+  color: var(--ink-subtle);
+}
+.lp-pr-head b {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+.lp-pr-bars {
+  display: grid;
+  gap: var(--s-2h);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.lp-pr-bars li {
+  display: grid;
+  grid-template-columns: 96px 1fr 48px;
+  align-items: center;
+  gap: var(--s-3);
+  color: var(--ink-muted);
+}
+.lp-pr-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--line);
+  overflow: hidden;
+}
+.lp-pr-track i {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--ink);
+}
+.lp-pr-bars [data-weakest] .lp-pr-track i {
+  background: var(--mark);
+}
+.lp-pr-val {
+  text-align: right;
+  color: var(--ink);
+  font-weight: 600;
+}
+.lp-pr-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-2h);
+}
+.lp-pr-label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--text-xs);
+  color: var(--ink-subtle);
+}
+.lp-pr-big {
+  margin-top: var(--s-1);
+  font-size: var(--text-xl);
+  line-height: 32px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.lp-pr-to {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--ink-subtle);
+}
+
+/* ---------- 3. how a session works ---------- */
+.lp-loop {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+/* One line runs through all six steps. */
+.lp-loop::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 16px;
+  right: 16px;
+  height: 1.5px;
+  background: var(--line-strong);
+}
+.lp-loop li {
+  position: relative;
+  min-width: 0;
+}
+.lp-loop-dot {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface-0);
+  box-shadow: inset 0 0 0 1.5px var(--line-strong);
+  font-size: var(--text-sm);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.lp-loop li:nth-child(4) .lp-loop-dot,
+.lp-loop li:nth-child(5) .lp-loop-dot {
+  background: var(--ink);
+  color: var(--on-ink);
+  box-shadow: none;
+}
+.lp-loop-term {
+  margin-top: var(--s-2h);
+  font-weight: 650;
+}
+.lp-loop-text {
+  margin-top: var(--s-1);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+/* ...and returns from Repeat to Observe. */
+.lp-loop-back {
+  position: relative;
+  height: 24px;
+  margin: var(--s-3) 16px 0;
+  border: 1.5px dashed var(--line-strong);
+  border-top: 0;
+  border-radius: 0 0 16px 16px;
+}
+.lp-loop-back::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -6px;
+  width: 10px;
+  height: 7px;
+  background: var(--line-strong);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.lp-how-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s-4);
+  margin-top: var(--s-6);
+}
+.lp-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  padding: var(--s-4);
+  border-radius: 20px;
+}
+.lp-panel-cap {
+  margin-bottom: var(--s-4);
+  font-size: var(--text-sm);
+  color: var(--ink-subtle);
+}
+.lp-panel-cap b {
+  margin-right: var(--s-1);
+  font-weight: 650;
+  color: var(--ink);
+}
+.lp-fb-verdict {
+  font-size: var(--text-xl);
+  line-height: 32px;
+  font-weight: 650;
+  color: var(--partial);
+}
+.lp-fb-meta {
+  margin-top: var(--s-1);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.lp-fb-list {
+  display: grid;
+  gap: var(--s-3);
+  margin: var(--s-4) 0 0;
+  padding: var(--s-4) 0 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+.lp-fb-list li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: var(--s-2h);
+}
+.lp-fb-num {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border-radius: 50%;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--on-ink);
+  background: var(--mark);
+}
+[data-state='found'] > .lp-fb-num {
+  background: var(--ok);
+}
+.lp-fb-label {
+  font-weight: 600;
+}
+.lp-fb-state {
+  margin-left: var(--s-1);
+  font-size: var(--text-xs);
+  color: var(--mark);
+}
+[data-state='found'] .lp-fb-state {
+  color: var(--ok);
+}
+.lp-fb-why {
+  margin-top: var(--s-1);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.lp-after {
+  flex: 1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: var(--s-4);
+}
+.lp-after .frame {
+  zoom: calc(var(--zoom) * 0.9);
+  margin: 12px;
+}
+
+/* ---------- 4. exams and scoring ---------- */
+.lp-exams {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s-6);
+  align-items: start;
+}
+.lp-exam-list {
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+.lp-exam-list > div {
+  display: grid;
+  grid-template-columns: 136px minmax(0, 1fr) auto;
+  gap: var(--s-3);
+  align-items: baseline;
+  padding-block: var(--s-3);
+  border-bottom: 1px solid var(--line);
+}
+.lp-exam-list dt {
+  font-weight: 650;
+}
+.lp-exam-list dd {
+  margin: 0;
+  color: var(--ink-muted);
+}
+.lp-score {
+  margin: 0;
+  padding: var(--s-5);
+  border-radius: 20px;
+}
+.lp-score-rows {
+  display: grid;
+  gap: var(--s-3);
+}
+.lp-score-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 56px;
+  align-items: center;
+  gap: var(--s-3);
+  font-variant-numeric: tabular-nums;
+}
+.lp-score-label {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+.lp-score-cells {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+.lp-cell {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  border-radius: 8px;
+  font-size: var(--text-xs);
+  font-weight: 650;
+}
+.lp-cell[data-state='correct'],
+.lp-legend [data-state='correct']::before {
+  background: var(--ok);
+  color: var(--on-ink);
+}
+.lp-cell[data-state='partial'],
+.lp-legend [data-state='partial']::before {
+  background: color-mix(in oklch, var(--partial) 22%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--partial);
+  color: var(--ink);
+}
+.lp-cell[data-state='wrong'],
+.lp-legend [data-state='wrong']::before {
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1.5px var(--mark);
+  color: var(--ink-muted);
+}
+.lp-score-total {
+  text-align: right;
+  font-weight: 650;
+}
+.lp-score-delta {
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  color: var(--ink-muted);
+}
+.lp-score-delta b {
+  margin-right: var(--s-2);
+  font-size: var(--text-3xl);
+  line-height: 1;
+  font-weight: 680;
+  letter-spacing: -0.025em;
+  color: var(--ok);
+  font-variant-numeric: tabular-nums;
+}
+.lp-score figcaption {
+  margin-top: var(--s-3);
+  font-size: var(--text-xs);
+  color: var(--ink-subtle);
+}
+.lp-legend {
+  display: flex;
+  gap: var(--s-3);
+  margin-top: var(--s-2);
+}
+.lp-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.lp-legend span::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.lp-rules {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 var(--s-5);
+  margin: 0;
+}
+.lp-rules > div {
+  padding-block: var(--s-3) var(--s-4);
+  border-top: 1px solid var(--line);
+}
+.lp-rules dt {
+  font-weight: 650;
+}
+.lp-rules dd {
+  margin: var(--s-1) 0 0;
+  color: var(--ink-muted);
+}
+.lp-formula {
+  display: grid;
+  gap: var(--s-1);
+  margin-top: var(--s-2h);
+  font-size: var(--text-sm);
+  color: var(--ink-subtle);
+  font-variant-numeric: tabular-nums;
+}
+.lp-formula b {
+  font-weight: 650;
+  color: var(--ink);
+}
+.lp-formula .lp-ok { color: var(--ok); }
+.lp-formula .lp-bad { color: var(--mark); }
+
+/* ---------- 5. roadmap ---------- */
+.lp-roadmap {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--s-6);
+  align-items: start;
+}
+.lp-roadmap-head {
+  position: sticky;
+  top: calc(64px + var(--s-5)); /* clear of the sticky header */
+}
+.lp-roadmap .lp-head {
+  margin-bottom: 0;
+}
+.lp-desc {
+  margin: 0;
+  color: var(--ink-muted);
+}
+.lp-desc-status {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+
+/* A route drawn in red pen beside the stops. Content is complete without the route.
+   RouteMap.tsx adds [data-motion] once it can follow the scroll; only then do unreached
+   stops mute (ink text only: 0.64 / 0.72 keep well above 4.5:1 on the dark canvas). */
+@property --p {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+@keyframes rm-progress {
+  from { --p: 0; }
+  to { --p: 1; }
+}
+.rm {
+  --rail: 96px;
+  position: relative;
+  padding: var(--s-2) 0 0 calc(var(--rail) + var(--s-4));
+}
+.rm-rail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--rail);
+  pointer-events: none;
+}
+/* Same mapping as the fallback in RouteMap.tsx. */
+.rm-rail[data-timeline='view'] {
+  animation: rm-progress linear both;
+  animation-timeline: view(block 60% 40%);
+}
+.rm-map {
+  display: block;
+  overflow: visible;
+  fill: none;
+}
+.rm-trail {
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 0.5 6;
+}
+.rm-ink {
+  stroke: var(--mark);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: calc(1 - var(--p));
+}
+.rm-pin-base {
+  fill: var(--surface-0);
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+.rm-pin-fill {
+  fill: var(--mark);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.rm-goal-ring {
+  fill: var(--surface-0);
+  stroke: var(--mark);
+  stroke-width: 2;
+}
+/* A thin ring that draws round each stop as it is reached, starting at 12 o'clock. */
+.rm-pin-ring {
+  fill: none;
+  stroke: var(--mark);
+  stroke-width: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  opacity: 0.55;
+  transform: rotate(-90deg);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.rm-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 3px var(--surface-0);
+  offset-distance: calc(var(--p) * 100%);
+  offset-rotate: 0deg;
+}
+.rm-days {
+  display: grid;
+  gap: var(--s-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rm-goal {
+  margin-top: var(--s-6);
+}
+.rm-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2h);
+  font-size: var(--text-xl);
+  line-height: 32px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+.rm-label {
+  flex: none;
+  min-width: 48px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ink-subtle);
+  font-variant-numeric: tabular-nums;
+}
+.rm-stop-body {
+  margin-top: var(--s-2h);
+  padding: var(--s-3) var(--s-4);
+  border-radius: 16px;
+  background: var(--surface-1);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rm[data-motion] .rm-stop:not([data-arrived]) .rm-name {
+    opacity: 0.64;
+  }
+  .rm[data-motion] .rm-stop:not([data-arrived]) .lp-parts > li > span:first-child {
+    opacity: 0.72;
+  }
+  .rm[data-motion] .rm-stop:not([data-arrived]) .rm-stop-body {
+    transform: translateY(var(--s-2));
+  }
+  .rm[data-motion] .rm-pin:not([data-arrived]) .rm-pin-fill {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  .rm[data-motion] .rm-pin:not([data-arrived]) .rm-pin-ring {
+    stroke-dashoffset: 1;
+  }
+  .rm[data-ready] .rm-pin-ring {
+    transition: stroke-dashoffset 220ms var(--ease-out);
+  }
+  .rm[data-ready] [data-arrived] .rm-pin-ring {
+    transition-duration: 560ms;
+    transition-delay: 60ms;
+  }
+  .rm-rail[data-done] .rm-marker {
+    opacity: 0;
+  }
+  .rm[data-ready] :is(.rm-name, .lp-parts > li > span:first-child, .rm-stop-body, .rm-pin-fill, .rm-marker) {
+    transition:
+      opacity 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+  }
+  .rm[data-ready] [data-arrived] :is(.rm-name, .lp-parts > li > span:first-child, .rm-stop-body, .rm-pin-fill) {
+    transition-duration: 300ms;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rm-rail {
+    animation: none;
+  }
+  .rm-ink {
+    stroke-dashoffset: 0;
+  }
+  .rm-marker {
+    display: none;
+  }
+}
+.lp-parts {
+  display: grid;
+  gap: var(--s-2h);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-parts li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  color: var(--ink);
+}
+.lp-outcome {
+  margin-top: var(--s-3);
+  padding-top: var(--s-2h);
+  border-top: 1px dashed var(--line);
+  font-size: var(--text-sm);
+}
+.lp-outcome strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ---------- 6. what you'll improve ---------- */
+.lp-skills {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-skills h3 {
+  margin-top: var(--s-3);
+  font-size: var(--text-md);
+  font-weight: 650;
+}
+.lp-skills p {
+  margin-top: var(--s-1);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+.lp-skills-later {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: var(--s-6);
+}
+.lp-skills-later li {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: var(--s-4);
+  align-items: center;
+}
+.lp-skills-later h3 {
+  margin-top: 0;
+}
+
+/* Diagrams: each skill as the flaw it teaches you to see, drawn exactly. */
+.lp-dia {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 104px;
+  border-radius: 14px;
+  background: var(--surface-1);
+  font-variant-numeric: tabular-nums;
+}
+.lp-dia i {
+  display: block;
+}
+.lp-dia-hier {
+  align-content: center;
+  justify-items: start;
+  gap: 8px;
+  padding-inline: 20%;
+}
+.lp-dia-hier i {
+  height: 10px;
+  width: 100%;
+  border-radius: 3px;
+  background: var(--ink);
+}
+.lp-dia-hier i:nth-child(2) {
+  width: 92%;
+  box-shadow: 0 0 0 4px var(--surface-1), 0 0 0 5.5px var(--mark);
+}
+.lp-dia-hier i:nth-child(3) {
+  width: 64%;
+  height: 6px;
+  background: var(--ink-subtle);
+}
+.lp-dia-space .lp-dia-box {
+  display: block;
+  width: 64%;
+  height: 48px;
+  padding: 10px 24px 10px 12px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1.5px var(--line-strong);
+}
+.lp-dia-space .lp-dia-box i {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--ink-subtle);
+}
+.lp-dia-space b {
+  position: absolute;
+  bottom: 8px;
+  font-size: var(--text-xs);
+  font-weight: 650;
+  color: var(--mark);
+}
+.lp-dia-space .l { left: 18%; }
+.lp-dia-space .r { right: 18%; }
+.lp-dia-align {
+  align-content: center;
+  justify-items: start;
+  gap: 10px;
+  padding-left: 28%;
+}
+.lp-dia-align::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 28%;
+  border-left: 1.5px dashed var(--mark);
+}
+.lp-dia-align i {
+  width: 96px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--ink-subtle);
+}
+.lp-dia-align i:nth-child(2) {
+  width: 72px;
+  margin-left: 6px;
+  background: var(--ink);
+}
+.lp-dia-type {
+  display: flex;
+  flex-wrap: wrap; /* a wrapping line can be centered with align-content; baseline alone pins it to the top */
+  align-content: center;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--s-3);
+  font-weight: 600;
+}
+.lp-dia-type span {
+  display: grid;
+  justify-items: center;
+  font-size: 16px;
+  line-height: 1.2;
+}
+.lp-dia-type span:nth-child(2) { font-size: 17px; }
+.lp-dia-type span:nth-child(3) { font-size: 20px; }
+.lp-dia-type b,
+.lp-dia-color b {
+  margin-top: var(--s-1);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--ink-subtle);
+}
+.lp-dia-type .off b {
+  color: var(--mark);
+}
+.lp-dia-color {
+  display: flex;
+  justify-content: center;
+  gap: var(--s-2h);
+}
+/* The same pairs the toast exercise uses: oklch 0.78 and 0.47 text on white. */
+.lp-dia-color span {
+  display: grid;
+  justify-items: center;
+  width: 64px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.lp-dia-color span::before {
+  content: '';
+  grid-area: 1 / 1;
+  width: 64px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--spec-white);
+}
+.lp-dia-color i {
+  grid-area: 1 / 1;
+  place-self: center;
+  font-style: normal;
+}
+.lp-dia-color .fail {
+  color: var(--spec-faint);
+}
+.lp-dia-color .pass {
+  color: var(--spec-ink-2);
+}
+.lp-dia-color .fail b {
+  color: var(--mark);
+}
+.lp-dia-color .pass b {
+  color: var(--ok);
+}
+.lp-dia-scale {
+  align-content: center;
+  justify-items: start;
+  gap: 6px;
+  padding-left: 24px;
+}
+.lp-dia-scale i {
+  height: 8px;
+  border-radius: 2px;
+  background: var(--ink-subtle);
+}
+.lp-dia-ease svg {
+  overflow: visible;
+  fill: none;
+  stroke: var(--mark);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.lp-finish {
+  margin-top: var(--s-7);
+  padding: var(--s-5);
+  border-radius: 20px;
+}
+.lp-finish .lp-subhead {
+  margin-top: 0;
+}
+.lp-finish-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-muted);
+}
+.lp-finish-list b {
+  display: block;
+  margin-bottom: var(--s-1);
+  font-size: var(--text-lg);
+  line-height: 28px;
+  font-weight: 650;
+  color: var(--ink);
+}
+.lp-note {
+  margin-top: var(--s-4);
+  font-size: var(--text-sm);
+  color: var(--ink-subtle);
+}
+.lp-later {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-top: var(--s-4);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line);
+  color: var(--ink-muted);
+}
+.lp-later b {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+/* ---------- 7. closing statement ---------- */
+.lp-end {
+  padding: var(--s-7) var(--lp-pad) var(--s-8);
+}
+.lp-end-statement {
+  max-width: 30ch;
+  font-size: var(--text-3xl);
+  line-height: 1.25;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink-muted);
+}
+.lp-end-statement b {
+  font-weight: 680;
+  color: var(--ink);
+}
+.lp-footer {
+  padding: var(--s-4) var(--lp-pad);
+  border-top: 1px solid var(--line);
+  font-size: var(--text-sm);
+  color: var(--ink-subtle);
+}
+
+/* ---------- entrances ----------
+   Content arrives in reading order instead of all at once. landingMotion.ts sets the state,
+   and only on elements below the fold at load, so nothing above it is ever hidden.
+   Paragraphs, captions and lists fade up 12px, 560ms ease-out, staggered 60ms. */
+.lp [data-revealed] {
+  transition:
+    opacity 560ms var(--ease-out) var(--reveal-delay, 0ms),
+    transform 560ms var(--ease-out) var(--reveal-delay, 0ms);
+}
+.lp [data-revealed='pending'] {
+  opacity: 0;
+  transform: translateY(12px);
+}
+@keyframes lp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Headings (RevealText.tsx) rise into place from behind their own line: each word starts one
+   line-height low and clipped to nothing. The clip shrinks as the word rises, so its visible
+   bottom edge stays on the line's baseline area: a mask that needs no overflow box, and so no
+   change to the line's height or baseline. Words on one line share a beat (--rt-i). */
+@keyframes rt-rise {
+  from {
+    transform: translateY(100%);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    transform: none;
+    clip-path: inset(-0.3em -0.15em -0.3em -0.15em);
+  }
+}
+.rt-word {
+  display: inline-block;
+}
+.rt {
+  --rt-step: 90ms; /* between lines */
+}
+.rt[data-split='words'] {
+  --rt-step: 55ms; /* between words */
+}
+.lp :is(.lp-head, .rt-host)[data-revealed] {
+  transition: none;
+}
+.lp :is(.lp-head, .rt-host)[data-revealed='pending'] {
+  opacity: 1;
+  transform: none;
+}
+.lp :is(.lp-head, .rt-host)[data-revealed='pending'] .rt-word {
+  transform: translateY(100%);
+  clip-path: inset(0 0 100% 0);
+}
+.lp :is(.lp-head, .rt-host)[data-revealed='in'] .rt-word {
+  animation: rt-rise 720ms var(--ease-out) backwards;
+  animation-delay: calc(var(--reveal-delay, 0ms) + var(--rt-i, 0) * var(--rt-step));
+}
+/* The section's intro paragraph follows its heading. */
+.lp .lp-head[data-revealed='pending'] > p {
+  opacity: 0;
+}
+.lp .lp-head[data-revealed='in'] > p {
+  animation: lp-rise 640ms var(--ease-out) backwards;
+  animation-delay: calc(var(--reveal-delay, 0ms) + 200ms);
+}
+
+/* Page load: the headline rises word by word, then the lead, the actions and the facts fade
+   up after it while the specimen builds from its blueprint beside them. Skipped when coming
+   back from the arena. The CTA row only fades: a clip would cut the button's focus ring. */
+@media (prefers-reduced-motion: no-preference) {
+  .lp:not([data-return]) .lp-hero-text h1 .rt-word {
+    animation: rt-rise 760ms var(--ease-out) backwards;
+    animation-delay: calc(80ms + var(--rt-i) * var(--rt-step));
+  }
+  .lp:not([data-return]) .lp-hero-text > :not(h1) {
+    animation: lp-rise 640ms var(--ease-out) backwards;
+    animation-delay: 380ms;
+  }
+  .lp:not([data-return]) .lp-hero-text > :nth-child(3) {
+    animation-delay: 480ms;
+  }
+  .lp:not([data-return]) .lp-hero-text > :nth-child(4) {
+    animation-delay: 560ms;
+  }
+}
+
+/* How a session works: the loop plays in order as it enters. The line through the steps
+   draws left to right (linear, 1s), each step arrives as the line reaches it, then the dashed
+   return draws back from Repeat to Observe, right to left, so the direction reads. */
+.lp .lp-loop[data-revealed] {
+  transition: none;
+}
+.lp .lp-loop[data-revealed='pending'] {
+  opacity: 1;
+  transform: none;
+}
+.lp-loop::before {
+  transform-origin: left center;
+}
+.lp-loop[data-revealed='pending']::before {
+  transform: scaleX(0);
+}
+.lp-loop[data-revealed='pending'] > li {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.lp-loop[data-revealed='in']::before {
+  animation: lp-draw-x 1000ms linear backwards;
+}
+.lp-loop[data-revealed='in'] > li {
+  animation: lp-rise 560ms var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 190ms);
+}
+@keyframes lp-draw-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+.lp .lp-loop-back[data-revealed] {
+  transition: none;
+}
+.lp .lp-loop-back[data-revealed='pending'] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(-8px -8px -8px 100%);
+}
+.lp .lp-loop-back[data-revealed='in'] {
+  animation: lp-draw-back 640ms linear 1100ms backwards;
+}
+@keyframes lp-draw-back {
+  from {
+    clip-path: inset(-8px -8px -8px 100%);
+  }
+  to {
+    clip-path: inset(-8px);
+  }
+}
+
+/* ---------- blueprint (Blueprint.tsx) ----------
+   Hosts paint their surface on ::before so the build can show the box as lines first.
+   Every time comes from BP_TIMING in lib/blueprint.ts as a --bp-* variable on .lp, plus the
+   host's --bp-delay stagger:
+     a. 0           subject boxes and construction lines draw (linear), crosses fade in
+     b. dims-at     dimension lines draw out from their label (linear), end ticks land
+     c. labels-at   px labels fade in, then hold, readable
+     d. content-at  surface and real content build in (ease-out)
+     e. residual-at the drawing fades to a faint residual; labels go, lines stay
+   Only opacity, transform, clip-path and stroke-dashoffset move. */
+.lp-tile-preview,
+.lp-panel,
+.lp-score,
+.lp-finish {
+  position: relative;
+  isolation: isolate;
+}
+.lp-panel,
+.lp-score,
+.lp-finish {
+  --surface: var(--surface-1);
+}
+:is(.lp-tile-preview, .lp-panel, .lp-score, .lp-finish)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--surface);
+  box-shadow: var(--surface-edge, none);
+}
+
+/* At rest: the residual. Construction lines (outlines, guides, crosses) stay at --bp-rest;
+   dimensions leave with their numbers, since a dimension line without its number is just a
+   broken line. Hover brings all of it back. */
+.bp {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: var(--bp-rest, 0.2);
+  color: var(--bp-line);
+  transition:
+    opacity 160ms ease-out,
+    color 200ms ease-out;
+}
+/* While it builds, the drawing sits on the bare sheet, so it takes the sheet's ink; at rest
+   (and on hover) it takes the ink of the picture it now sits on. Colors live in the palette. */
+:is([data-bp='pending'], [data-bp='build']) > .bp {
+  --bp-line: var(--bp-sheet-line);
+  --bp-text: var(--bp-sheet-text);
+}
+@media (hover: hover) and (pointer: fine) {
+  .lp-tile:hover .lp-tile-preview > .bp {
+    transition-duration: 220ms;
+  }
+}
+.bp path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: square;
+}
+.bp-guide {
+  stroke-dasharray: 1;
+  opacity: 0.32;
+}
+.bp-outline,
+.bp-dim {
+  stroke-dasharray: 1;
+}
+.bp-label {
+  fill: var(--bp-text);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.bp :is(.bp-label, .bp-dim, .bp-tick) {
+  opacity: 0;
+  transition: opacity 160ms ease-out;
+}
+[data-bp='build'] .bp :is(.bp-label, .bp-dim, .bp-tick) {
+  opacity: 1;
+  transition: none;
+}
+
+[data-bp='pending']::before,
+[data-bp='pending'] > * {
+  opacity: 0;
+}
+[data-bp='build'] > .bp {
+  animation: bp-to-rest var(--bp-residual) ease-out both;
+  animation-delay: calc(var(--bp-delay, 0ms) + var(--bp-residual-at));
+}
+/* a. */
+[data-bp='build'] :is(.bp-guide, .bp-outline) {
+  animation: bp-draw var(--bp-outline) linear both;
+  animation-delay: var(--bp-delay, 0ms);
+}
+[data-bp='build'] .bp-mark {
+  animation: bp-fade 200ms ease-out both;
+  animation-delay: var(--bp-delay, 0ms);
+}
+/* b. */
+[data-bp='build'] .bp-dim {
+  animation:
+    bp-draw var(--bp-dims) linear both,
+    bp-out var(--bp-residual) ease-out forwards;
+  animation-delay:
+    calc(var(--bp-delay, 0ms) + var(--bp-dims-at)),
+    calc(var(--bp-delay, 0ms) + var(--bp-residual-at));
+}
+[data-bp='build'] .bp-tick {
+  animation:
+    bp-fade 160ms ease-out both,
+    bp-out var(--bp-residual) ease-out forwards;
+  animation-delay:
+    calc(var(--bp-delay, 0ms) + var(--bp-dims-at) + var(--bp-dims) - 120ms),
+    calc(var(--bp-delay, 0ms) + var(--bp-residual-at));
+}
+/* c. then out with the dimensions at e. */
+[data-bp='build'] .bp-label {
+  animation:
+    bp-fade var(--bp-label-in) ease-out both,
+    bp-out var(--bp-residual) ease-out forwards;
+  animation-delay:
+    calc(var(--bp-delay, 0ms) + var(--bp-labels-at)),
+    calc(var(--bp-delay, 0ms) + var(--bp-residual-at));
+}
+/* d. */
+[data-bp='build']::before {
+  animation: bp-fade var(--bp-content) ease-out both;
+  animation-delay: calc(var(--bp-delay, 0ms) + var(--bp-content-at));
+}
+[data-bp='build'] > :not(.bp, .rt-host, .lp-panel-cap) {
+  animation: bp-settle var(--bp-content) var(--ease-out) both;
+  animation-delay: calc(var(--bp-delay, 0ms) + var(--bp-content-at));
+}
+/* A subhead inside a host rises line by line as the content builds. */
+[data-bp='build'] > .rt-host .rt-word {
+  animation: rt-rise 720ms var(--ease-out) backwards;
+  animation-delay: calc(var(--bp-delay, 0ms) + var(--bp-content-at) + var(--rt-i, 0) * var(--rt-step));
+}
+/* A panel's caption reads with the numbers, before the content covers the drawing. */
+[data-bp='build'] > .lp-panel-cap {
+  animation: lp-rise 560ms var(--ease-out) both;
+  animation-delay: calc(var(--bp-delay, 0ms) + var(--bp-labels-at));
+}
+@keyframes bp-to-rest {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: var(--bp-rest, 0.2);
+  }
+}
+@keyframes bp-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes bp-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes bp-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes bp-settle {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+/* Tile captions arrive with the px labels, so title and numbers read together while the
+   drawing holds: the title rises from behind its line, text and status fade up after it. */
+.lp-tile:has(> [data-bp='pending']) > :not(.lp-tile-preview) {
+  opacity: 0;
+}
+.lp-tile:has(> [data-bp='build']) > .lp-tile-title {
+  animation: rt-rise 720ms var(--ease-out) backwards;
+  animation-delay: calc(var(--bp-delay, 0ms) + var(--bp-labels-at));
+}
+.lp-tile:has(> [data-bp='build']) > :is(.lp-tile-desc, .lp-tile-status) {
+  animation: lp-rise 560ms var(--ease-out) backwards;
+  animation-delay: calc(var(--bp-delay, 0ms) + var(--bp-labels-at) + 90ms);
+}
+.lp-tile:has(> [data-bp='build']) > .lp-tile-status {
+  animation-delay: calc(var(--bp-delay, 0ms) + var(--bp-labels-at) + 160ms);
+}
+
+/* Progress tile: the bars fill from their left edge as the content builds. */
+.lp-pr-track i {
+  transform-origin: left center;
+}
+[data-bp='pending'] .lp-pr-track i {
+  transform: scaleX(0);
+}
+[data-bp='build'] .lp-pr-track i {
+  transition: transform 700ms var(--ease-out) calc(var(--bp-delay, 0ms) + var(--bp-content-at) + var(--b, 0) * 60ms);
+}
+
+/* ---------- scroll ---------- */
+
+/* A construction line in the left margin draws down as the page scrolls, with a registration
+   cross riding its tip: where you are on the sheet, in the blueprint's own hand. Driven by
+   the scroll timeline natively, by --lp-scroll from landingMotion.ts otherwise. Reduced
+   motion hides it: a static full line would say nothing. */
+.lp-sheet {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--lp-pad) / 2 - 4px);
+  z-index: 1;
+  width: 9px;
+  pointer-events: none;
+}
+.lp-sheet::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 4px;
+  width: 1px;
+  background: var(--sheet-line);
+  transform-origin: top center;
+  transform: scaleY(var(--lp-scroll, 0));
+}
+.lp-sheet i {
+  position: absolute;
+  inset: 0;
+  transform: translateY(calc(var(--lp-scroll, 0) * (100% - 9px)));
+}
+.lp-sheet i::before,
+.lp-sheet i::after {
+  content: '';
+  position: absolute;
+  background: var(--sheet-line);
+}
+.lp-sheet i::before {
+  top: 4px;
+  left: 0;
+  width: 9px;
+  height: 1px;
+}
+.lp-sheet i::after {
+  top: 0;
+  left: 4px;
+  width: 1px;
+  height: 9px;
+}
+@supports (animation-timeline: scroll()) {
+  .lp-sheet::before {
+    animation: lp-sheet-line linear both;
+    animation-timeline: scroll(root block);
+  }
+  .lp-sheet i {
+    animation: lp-sheet-tip linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes lp-sheet-line {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@keyframes lp-sheet-tip {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(100% - 9px));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-sheet {
+    display: none;
+  }
+}
+
+/* Quiet reading highlights on content that is not a control: no cursor change, no lift. */
+.rm-stop-body,
+.lp-skills > li {
+  position: relative;
+}
+.rm-stop-body::after,
+.lp-skills:not(.lp-skills-later) .lp-dia::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .rm-stop:hover .rm-stop-body::after,
+  .lp-skills > li:hover .lp-dia::after {
+    opacity: 1;
+  }
+}
+
+/* ---------- desktop widths: 1024 to 1440+ ---------- */
+@media (max-width: 1263px) {
+  .lp {
+    --zoom: 0.9;
+  }
+  .lp-hero h1 {
+    font-size: var(--text-4xl);
+  }
+}
+@media (max-width: 1099px) {
+  .lp {
+    --zoom: 0.8;
+  }
+  /* The meters need the full row to keep every skill name whole: the title sits above. */
+  .lp-strip {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-3);
+  }
+  .lp-strip-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+  }
+  .lp-loop {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: var(--s-5);
+  }
+  .lp-loop::before,
+  .lp-loop-back {
+    display: none;
+  }
+  .lp-skills {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: var(--s-5);
+  }
+}
